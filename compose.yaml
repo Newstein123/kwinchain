@@ -22,7 +22,10 @@ services:
         networks:
             - sail
         depends_on:
-            - mysql
+            mysql:
+                condition: service_healthy
+            minio:
+                condition: service_started
     mysql:
         image: 'mysql:8.4'
         ports:
@@ -48,9 +51,26 @@ services:
                 - '-p${DB_PASSWORD}'
             retries: 3
             timeout: 5s
+    minio:
+        image: minio/minio:latest
+        ports:
+            - '${FORWARD_MINIO_PORT:-9000}:9000'
+            - '${FORWARD_MINIO_CONSOLE_PORT:-9001}:9001'
+        environment:
+            MINIO_ROOT_USER: '${MINIO_ROOT_USER:-minioadmin}'
+            MINIO_ROOT_PASSWORD: '${MINIO_ROOT_PASSWORD:-minioadmin123}'
+            MINIO_DEFAULT_BUCKETS: '${MINIO_BUCKET:-contributions}:public'
+        volumes:
+            - sail-minio:/data
+        networks:
+            - sail
+        command: server /data --console-address ":9001"
+        # No healthcheck: minio/minio image does not include mc or curl
 networks:
     sail:
         driver: bridge
 volumes:
     sail-mysql:
+        driver: local
+    sail-minio:
         driver: local

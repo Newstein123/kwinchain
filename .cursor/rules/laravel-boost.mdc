@@ -1,6 +1,7 @@
 ---
 alwaysApply: true
 ---
+
 <laravel-boost-guidelines>
 === foundation rules ===
 
@@ -448,4 +449,29 @@ export default function Edit() {
 
 - Every change must be programmatically tested. Write a new test or update an existing test, then run the affected tests to make sure they pass.
 - Run the minimum number of tests needed to ensure code quality and speed. Use `php artisan test` with a specific filename or filter.
+
+
+=== .ai/setup rules ===
+
+Project Architecture Rules:
+
+1. All status fields in database must be stored as integer (tinyInteger).
+2. Every status field must have a corresponding PHP 8.1 Enum inside app/Enums.
+3. Laravel native enum casting must be used in model:
+
+   protected $casts = [
+       'status' => ModelStatusEnum::class,
+   ];
+
+4. Controllers must NEVER use raw integers like 0,1,2.
+   Always use Enum cases:
+   Example:
+   BookingStatus::CONFIRMED
+
+6. No magic numbers allowed anywhere in code.
+
+7. Use Service layer pattern:
+   - Controller → Service → Repository (if needed)
+
+8. All business logic must be inside Service classes.
 </laravel-boost-guidelines>

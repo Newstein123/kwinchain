@@ -51,12 +51,14 @@ return [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
             'secret' => env('AWS_SECRET_ACCESS_KEY'),
-            'region' => env('AWS_DEFAULT_REGION'),
+            'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
-            'endpoint' => env('AWS_ENDPOINT'),
-            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
-            'throw' => false,
+            // For MinIO in Sail: endpoint defaults to minio:9000. For AWS S3: leave AWS_ENDPOINT unset.
+            'endpoint' => env('AWS_ENDPOINT') ?: (env('LARAVEL_SAIL') ? 'http://minio:9000' : null),
+            'use_path_style_endpoint' => (bool) env('AWS_USE_PATH_STYLE_ENDPOINT', env('LARAVEL_SAIL') ? true : false), // Required for MinIO, false for AWS S3
+            'visibility' => env('AWS_VISIBILITY', 'public'),
+            'throw' => true, // Enable exceptions to get actual error messages
             'report' => false,
         ],
 
