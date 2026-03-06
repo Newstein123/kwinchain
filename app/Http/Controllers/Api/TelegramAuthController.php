@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\CompleteProfileRequest;
 use App\Http\Requests\Api\TelegramWebAppLoginRequest;
+use App\Http\Resources\Api\UserProfileResource;
+use App\Http\Resources\Api\UserResource;
 use App\Models\User;
 use App\Services\TelegramWebAppAuthService;
 use Illuminate\Http\JsonResponse;
@@ -59,11 +61,7 @@ class TelegramAuthController extends Controller
             'message' => 'Login Successfully',
             'data' => [
                 'token' => $token,
-                'user' => [
-                    'id' => $user->id,
-                    'name' => $user->name,
-                    'telegram_user_id' => $user->telegram_user_id,
-                ],
+                'user' => new UserResource($user),
             ],
         ]);
     }
@@ -101,13 +99,7 @@ class TelegramAuthController extends Controller
         return response()->json([
             'message' => 'Profile Data retrieved successfully',
             'data' => [
-                'user' => [
-                    'id' => $user->id,
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'phone' => $user->phone,
-                    'is_profile_completed' => (bool) $user->profile_completed,
-                ],
+                'user' => new UserProfileResource($user),
             ],
         ]);
     }
