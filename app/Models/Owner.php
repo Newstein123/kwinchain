@@ -5,9 +5,12 @@ namespace App\Models;
 use App\Enums\OwnerStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Laravel\Sanctum\HasApiTokens;
 
 class Owner extends Model
 {
+    use HasApiTokens;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -55,5 +58,13 @@ class Owner extends Model
     public function verifications(): HasMany
     {
         return $this->hasMany(OwnerVerification::class);
+    }
+
+    /**
+     * @return HasMany<OwnerTrustedUser, $this>
+     */
+    public function trustedUsers(): HasMany
+    {
+        return $this->hasMany(OwnerTrustedUser::class);
     }
 }
