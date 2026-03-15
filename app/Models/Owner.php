@@ -3,13 +3,16 @@
 namespace App\Models;
 
 use App\Enums\OwnerStatus;
+use App\Enums\OwnerVerificationLevel;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Sanctum\HasApiTokens;
 
-class Owner extends Model
+class Owner extends Model implements AuthenticatableContract
 {
-    use HasApiTokens;
+    use Authenticatable, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -22,6 +25,7 @@ class Owner extends Model
         'phone',
         'password',
         'status',
+        'verification_level',
     ];
 
     /**
@@ -41,6 +45,8 @@ class Owner extends Model
         return [
             'password' => 'hashed',
             'status' => OwnerStatus::class,
+            'verification_level' => OwnerVerificationLevel::class,
+            'email_verified_at' => 'datetime',
         ];
     }
 
