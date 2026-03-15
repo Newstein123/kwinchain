@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\OwnerFieldController;
 use App\Http\Controllers\Api\Owner\OwnerRegistrationController;
+use App\Http\Controllers\Api\OwnerFieldController;
 use App\Http\Controllers\Api\TelegramAuthController;
 use Illuminate\Support\Facades\Route;
 
