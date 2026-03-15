@@ -18,6 +18,7 @@ class Field extends Model
         'owner_id',
         'name',
         'description',
+        'location',
         'city',
         'address',
         'latitude',
@@ -25,6 +26,7 @@ class Field extends Model
         'surface_type',
         'slot_duration',
         'price_per_hour',
+        'deposit_amount',
         'status',
     ];
 
@@ -37,6 +39,7 @@ class Field extends Model
             'latitude' => 'float',
             'longitude' => 'float',
             'price_per_hour' => 'decimal:2',
+            'deposit_amount' => 'decimal:2',
             'surface_type' => FieldSurfaceType::class,
             'slot_duration' => FieldSlotDuration::class,
             'status' => FieldStatus::class,
