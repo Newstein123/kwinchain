@@ -19,8 +19,12 @@ class OwnerVerification extends Model
         'nrc_front_image',
         'nrc_back_image',
         'selfie_with_id',
+        'business_name',
         'business_license_image',
         'land_document_image',
+        'utility_bill_image',
+        'field_location_lat',
+        'field_location_lng',
         'status',
         'reviewed_by',
         'reviewed_at',
@@ -34,6 +38,8 @@ class OwnerVerification extends Model
         return [
             'status' => OwnerVerificationStatus::class,
             'reviewed_at' => 'datetime',
+            'field_location_lat' => 'float',
+            'field_location_lng' => 'float',
         ];
     }
 
