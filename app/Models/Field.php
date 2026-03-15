@@ -61,4 +61,20 @@ class Field extends Model
     {
         return $this->hasMany(FieldImage::class);
     }
+
+    /**
+     * @return HasMany<FieldSchedule, $this>
+     */
+    public function schedules(): HasMany
+    {
+        return $this->hasMany(FieldSchedule::class);
+    }
+
+    /**
+     * @return HasMany<FieldTimeSlot, $this>
+     */
+    public function timeSlots(): HasMany
+    {
+        return $this->hasMany(FieldTimeSlot::class);
+    }
 }

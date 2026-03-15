@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Owner;
+use App\Models\User;
+
 return [
 
     /*
@@ -40,6 +43,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'owner' => [
+            'driver' => 'sanctum',
+            'provider' => 'owners',
+        ],
     ],
 
     /*
@@ -62,7 +70,12 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class),
+            'model' => env('AUTH_MODEL', User::class),
+        ],
+
+        'owners' => [
+            'driver' => 'eloquent',
+            'model' => Owner::class,
         ],
 
         // 'users' => [
