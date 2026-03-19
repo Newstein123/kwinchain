@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\FieldTimeSlotStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class FieldTimeSlot extends Model
 {
@@ -18,6 +19,7 @@ class FieldTimeSlot extends Model
         'end_time',
         'price',
         'status',
+        'block_reason',
     ];
 
     /**
@@ -38,5 +40,13 @@ class FieldTimeSlot extends Model
     public function field(): BelongsTo
     {
         return $this->belongsTo(Field::class);
+    }
+
+    /**
+     * @return HasMany<BookingSlot, $this>
+     */
+    public function bookingSlots(): HasMany
+    {
+        return $this->hasMany(BookingSlot::class);
     }
 }
