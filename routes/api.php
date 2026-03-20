@@ -22,6 +22,10 @@ Route::prefix('v1')->group(function () {
             Route::post('/verify-identity', [OwnerRegistrationController::class, 'verifyIdentity']);
             Route::post('/payout-account', [OwnerRegistrationController::class, 'payoutAccount']);
 
+            // Owner – Fields CRUD
+            Route::apiResource('fields', OwnerFieldController::class);
+            Route::patch('fields/{field}/status', [OwnerFieldController::class, 'changeStatus']);
+
             // Weekly schedules
             Route::post('/fields/{id}/schedules', [OwnerFieldScheduleController::class, 'add']);
             Route::put('/schedules/{id}', [OwnerFieldScheduleController::class, 'update']);
@@ -42,11 +46,5 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/users/complete-profile', [TelegramAuthController::class, 'completeProfile']);
         Route::get('/user/profile', [TelegramAuthController::class, 'profile']);
-
-        // Owner – Fields CRUD
-        Route::prefix('owner')->group(function () {
-            Route::apiResource('fields', OwnerFieldController::class);
-            Route::patch('fields/{field}/status', [OwnerFieldController::class, 'changeStatus']);
-        });
     });
 });
