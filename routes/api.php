@@ -1,13 +1,9 @@
 <?php
 
-<<<<<<< HEAD
 use App\Http\Controllers\Api\OwnerFieldController;
-=======
 use App\Http\Controllers\Api\Owner\OwnerFieldScheduleController;
 use App\Http\Controllers\Api\Owner\OwnerFieldTimeSlotController;
->>>>>>> origin/main
 use App\Http\Controllers\Api\Owner\OwnerRegistrationController;
-use App\Http\Controllers\Api\OwnerFieldController;
 use App\Http\Controllers\Api\TelegramAuthController;
 use Illuminate\Support\Facades\Route;
 
