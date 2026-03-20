@@ -1,6 +1,11 @@
 <?php
 
+<<<<<<< HEAD
 use App\Http\Controllers\Api\OwnerFieldController;
+=======
+use App\Http\Controllers\Api\Owner\OwnerFieldScheduleController;
+use App\Http\Controllers\Api\Owner\OwnerFieldTimeSlotController;
+>>>>>>> origin/main
 use App\Http\Controllers\Api\Owner\OwnerRegistrationController;
 use App\Http\Controllers\Api\OwnerFieldController;
 use App\Http\Controllers\Api\TelegramAuthController;
@@ -11,14 +16,30 @@ Route::prefix('v1')->group(function () {
     Route::post('/auth/telegram-webapp', [TelegramAuthController::class, 'login']);
 
     // Owner registration & KYC (public)
-    Route::post('/owners/register', [OwnerRegistrationController::class, 'register']);
-    Route::post('/owners/verify-otp', [OwnerRegistrationController::class, 'verifyOtp']);
+    Route::post('/owner/register', [OwnerRegistrationController::class, 'register']);
+    Route::post('/owner/verify-otp', [OwnerRegistrationController::class, 'verifyOtp']);
 
-    // Owner registration & KYC (protected – owner token)
     Route::middleware('auth:owner')->group(function () {
-        Route::post('/owners/verify-identity', [OwnerRegistrationController::class, 'verifyIdentity']);
-        Route::post('/owners/verify-business', [OwnerRegistrationController::class, 'verifyBusiness']);
-        Route::post('/owners/payout-account', [OwnerRegistrationController::class, 'payoutAccount']);
+        Route::prefix('owner')->group(function () {
+            // Owner registration & KYC (protected – owner token)
+            Route::post('/verify-business', [OwnerRegistrationController::class, 'verifyBusiness']);
+            Route::post('/verify-identity', [OwnerRegistrationController::class, 'verifyIdentity']);
+            Route::post('/payout-account', [OwnerRegistrationController::class, 'payoutAccount']);
+
+            // Weekly schedules
+            Route::post('/fields/{id}/schedules', [OwnerFieldScheduleController::class, 'add']);
+            Route::put('/schedules/{id}', [OwnerFieldScheduleController::class, 'update']);
+            Route::get('/fields/{id}/schedules', [OwnerFieldScheduleController::class, 'list']);
+
+            // Time slots
+            Route::post('/fields/{id}/generate-slots', [OwnerFieldTimeSlotController::class, 'generate']);
+            Route::post('/fields/{id}/manual-slots', [OwnerFieldTimeSlotController::class, 'manual']);
+            Route::get('/fields/{id}/slots', [OwnerFieldTimeSlotController::class, 'listByDate']);
+            Route::post('/slots/{id}/block', [OwnerFieldTimeSlotController::class, 'block']);
+            Route::post('/slots/{id}/unblock', [OwnerFieldTimeSlotController::class, 'unblock']);
+            Route::delete('/slots/{id}', [OwnerFieldTimeSlotController::class, 'delete']);
+            Route::post('/fields/{id}/bulk-block', [OwnerFieldTimeSlotController::class, 'bulkBlock']);
+        });
     });
 
     // Protected – requires Bearer token (user)
