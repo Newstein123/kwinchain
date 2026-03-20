@@ -65,4 +65,12 @@ class Owner extends Model implements AuthenticatableContract
     {
         return $this->hasMany(OwnerVerification::class);
     }
+
+    /**
+     * @return HasMany<OwnerTrustedUser, $this>
+     */
+    public function trustedUsers(): HasMany
+    {
+        return $this->hasMany(OwnerTrustedUser::class);
+    }
 }

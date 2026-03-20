@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\OwnerTrustedUserController;
 use App\Http\Controllers\Api\Owner\OwnerFieldScheduleController;
 use App\Http\Controllers\Api\Owner\OwnerFieldTimeSlotController;
 use App\Http\Controllers\Api\Owner\OwnerRegistrationController;
@@ -10,12 +11,17 @@ Route::prefix('v1')->group(function () {
     // Public – Telegram Web App login
     Route::post('/auth/telegram-webapp', [TelegramAuthController::class, 'login']);
 
+    // Protected – requires Bearer token (User)
     // Owner registration & KYC (public)
     Route::post('/owner/register', [OwnerRegistrationController::class, 'register']);
     Route::post('/owner/verify-otp', [OwnerRegistrationController::class, 'verifyOtp']);
 
     Route::middleware('auth:owner')->group(function () {
         Route::prefix('owner')->group(function () {
+            // Trusted Users
+            Route::post('/users/{id}/mark-trusted',   [OwnerTrustedUserController::class, 'markTrusted']);
+            Route::post('/users/{id}/remove-trusted', [OwnerTrustedUserController::class, 'removeTrusted']);
+
             // Owner registration & KYC (protected – owner token)
             Route::post('/verify-business', [OwnerRegistrationController::class, 'verifyBusiness']);
             Route::post('/verify-identity', [OwnerRegistrationController::class, 'verifyIdentity']);
