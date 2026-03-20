@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\OwnerFieldController;
 use App\Http\Controllers\Api\Owner\OwnerFieldScheduleController;
 use App\Http\Controllers\Api\Owner\OwnerFieldTimeSlotController;
 use App\Http\Controllers\Api\Owner\OwnerRegistrationController;
@@ -20,6 +21,10 @@ Route::prefix('v1')->group(function () {
             Route::post('/verify-business', [OwnerRegistrationController::class, 'verifyBusiness']);
             Route::post('/verify-identity', [OwnerRegistrationController::class, 'verifyIdentity']);
             Route::post('/payout-account', [OwnerRegistrationController::class, 'payoutAccount']);
+
+            // Owner – Fields CRUD
+            Route::apiResource('fields', OwnerFieldController::class);
+            Route::patch('fields/{field}/status', [OwnerFieldController::class, 'changeStatus']);
 
             // Weekly schedules
             Route::post('/fields/{id}/schedules', [OwnerFieldScheduleController::class, 'add']);
